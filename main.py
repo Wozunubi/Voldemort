@@ -42,7 +42,7 @@ def decrypt(folder):
 
         for file in os.listdir(folder):
             if os.path.isdir(os.path.join(folder, file)):
-                decrypt(os.path.join(folder, file))
+                print("check")
             elif file != "key":
                 f1 = open(folder + "/" + file, "rb")
                 f2 = open(folder + "/" + file + ".tmp", "wt")
