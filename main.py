@@ -23,7 +23,7 @@ def encrypt(fernet, folder):
 def decrypt(fernet, folder):
     for file in os.listdir(folder):
         if os.path.isdir(os.path.join(folder, file)):
-            print("check")
+            decrypt(fernet, os.path.join(folder, file))
         elif file != "key":
             f1 = open(folder + "/" + file, "rb")
             f2 = open(folder + "/" + file + ".tmp", "wt")
