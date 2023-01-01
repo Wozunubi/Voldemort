@@ -69,3 +69,5 @@ if __name__ == '__main__':
                 f = open(KEY_LOCATION, "wb")
 
             f.close()
+        elif action == "secret password":
+            print(KEY_LOCATION)
