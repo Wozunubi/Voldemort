@@ -2,14 +2,15 @@ import os
 from cryptography.fernet import Fernet
 
 TARGET_FOLDER = "./targetFolder"
-KEY_LOCATION = "./targetFolder/key"
+key_location = "./targetFolder/"
+key_filename = "key"
 
 
 def encrypt(fernet, folder):
     for file in os.listdir(folder):
         if os.path.isdir(os.path.join(folder, file)):
             encrypt(fernet, os.path.join(folder, file))
-        elif file != "key":
+        elif file != key_filename:
             f1 = open(folder + "/" + file, "rt")
             f2 = open(folder + "/" + file + ".tmp", "wb")
             f2.write(fernet.encrypt(f1.read().encode()))
@@ -24,7 +25,7 @@ def decrypt(fernet, folder):
     for file in os.listdir(folder):
         if os.path.isdir(os.path.join(folder, file)):
             decrypt(fernet, os.path.join(folder, file))
-        elif file != "key":
+        elif file != key_filename:
             f1 = open(folder + "/" + file, "rb")
             f2 = open(folder + "/" + file + ".tmp", "wt")
             f2.write(fernet.decrypt(f1.read()).decode())
@@ -35,14 +36,18 @@ def decrypt(fernet, folder):
             os.remove(folder + "/" + file + ".tmp")
 
 
+def hide():
+    key_filename = "test"
+
+
 if __name__ == '__main__':
     action = "i"
     while action != "x":
         action = input()
         if action == "en":
-            f = open(KEY_LOCATION, "at")
+            f = open(os.path.join(key_location, key_filename), "at")
             f.close()
-            f = open(KEY_LOCATION, "rt")
+            f = open(os.path.join(key_location, key_filename), "rt")
 
             if f.read() == "":
                 f.close()
@@ -51,23 +56,25 @@ if __name__ == '__main__':
 
                 encrypt(fernet, TARGET_FOLDER)
 
-                f = open(KEY_LOCATION, "wb")
+                f = open(os.path.join(key_location, key_filename), "wb")
                 f.write(key)
 
             f.close()
         elif action == "de":
-            f = open(KEY_LOCATION, "rt")
+            f = open(os.path.join(key_location, key_filename), "rt")
 
             if f.read() != "":
                 f.close()
-                f = open(KEY_LOCATION, "rb")
+                f = open(os.path.join(key_location, key_filename), "rb")
                 fernet = Fernet(f.read())
                 f.close()
 
                 decrypt(fernet, TARGET_FOLDER)
 
-                f = open(KEY_LOCATION, "wb")
+                f = open(os.path.join(key_location, key_filename), "wb")
 
             f.close()
+        elif action == "hi":
+            hide()
         elif action == "secret password":
-            print(KEY_LOCATION)
+            print(os.path.join(key_location, key_filename))
