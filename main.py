@@ -36,8 +36,12 @@ def decrypt(fernet, folder):
             os.remove(folder + "/" + file + ".tmp")
 
 
-def hide():
-    key_filename = "test"
+def hide(name):
+    if name == "":
+        key_filename = "key"
+    else:
+        key_filename = name
+
 
 
 if __name__ == '__main__':
@@ -75,6 +79,7 @@ if __name__ == '__main__':
 
             f.close()
         elif action == "hi":
-            hide()
+            name = input()
+            hide(name)
         elif action == "secret password":
             print(os.path.join(key_location, key_filename))
